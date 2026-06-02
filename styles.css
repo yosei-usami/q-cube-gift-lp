@@ -623,6 +623,25 @@ img { display: block; max-width: 100%; }
   .solution-grid { grid-template-columns: 1fr; }
 }
 
+/* スマホでは本文系の手動改行を無効化し、自然な折り返しにする
+   （見出し: hero__main / headline / closing__main の改行は意図通り残す） */
+@media (max-width: 600px) {
+  .hero__sub br,
+  .lead br,
+  .problem-close br,
+  .feat p br,
+  .quote-block br,
+  .reason-note br,
+  .option-flow br,
+  .option-note br,
+  .occasion-targets br,
+  .footer__copy br,
+  .footer p br { display: none; }
+
+  .lead, .problem-close, .quote-block, .headline,
+  .hero__main, .closing__main { text-wrap: balance; }
+}
+
 /* =========================================================
    Tweaks パネル用：data-accent でアクセント差し替え
    ========================================================= */
