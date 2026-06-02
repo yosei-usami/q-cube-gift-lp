@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q-CUBE LP — スマホプレビュー</title>
+<style>
+  :root { --bg:#2b2722; --panel:#1f1c18; --text:#e8e1d6; --accent:#C2705A; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+    font-family:"Noto Sans JP",system-ui,sans-serif;
+    display:flex; flex-direction:column; align-items:center; gap:18px; padding:24px 12px 48px;
+  }
+  .bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .bar .label { font-size:13px; opacity:.7; letter-spacing:.04em; }
+  .bar button {
+    font:500 13px/1 "Noto Sans JP",sans-serif; color:var(--text);
+    background:var(--panel); border:1px solid rgba(255,255,255,.18);
+    padding:8px 14px; border-radius:999px; cursor:pointer; transition:.15s;
+  }
+  .bar button:hover { border-color:var(--accent); }
+  .bar button.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .phone {
+    background:#000; border-radius:42px; padding:12px;
+    box-shadow:0 24px 60px rgba(0,0,0,.5); transition:width .2s ease;
+  }
+  .phone iframe {
+    display:block; width:100%; height:812px; border:0;
+    border-radius:30px; background:#FCF8F3;
+  }
+  .hint { font-size:12px; opacity:.55; max-width:360px; text-align:center; line-height:1.6; }
+  .hint code { background:rgba(255,255,255,.1); padding:2px 6px; border-radius:5px; }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <span class="label">画面幅</span>
+    <button data-w="375">375 (iPhone SE/mini)</button>
+    <button data-w="390" class="active">390 (iPhone 標準)</button>
+    <button data-w="430">430 (iPhone Pro Max)</button>
+  </div>
+
+  <div class="phone" id="phone" style="width:414px">
+    <iframe id="frame" src="Q-CUBE%20%E3%82%AE%E3%83%95%E3%83%88LP.html" title="Q-CUBE LP モバイルプレビュー"></iframe>
+  </div>
+
+  <p class="hint">ローカルサーバー起動後、<code>http://localhost:8000/preview-mobile.html</code> を開くとこの画面になります。上のボタンで幅を切り替え、編集後はこのページを再読み込みすれば最新が反映されます。</p>
+
+<script>
+  const phone = document.getElementById('phone');
+  const buttons = document.querySelectorAll('.bar button');
+  function setWidth(w){
+    phone.style.width = (parseInt(w,10) + 24) + 'px'; // +枠のpadding
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.w === w));
+  }
+  buttons.forEach(b => b.addEventListener('click', () => setWidth(b.dataset.w)));
+  setWidth('390');
+</script>
+</body>
+</html>

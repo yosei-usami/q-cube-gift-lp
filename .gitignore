@@ -1,0 +1,9 @@
+# system
+.thumbnail
+.DS_Store
+Thumbs.db
+
+# 作業・計画用（公開しない）
+scraps/
+uploads/
+画像をコピー.bat

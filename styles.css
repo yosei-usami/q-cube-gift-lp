@@ -1,0 +1,663 @@
+/* =========================================================
+   Q-CUBE ギフトLP — デザインシステム
+   余白で語る、上質で温かなプレミアム感
+   ========================================================= */
+
+:root {
+  /* --- カラートークン（テラコッタ基準） --- */
+  --terracotta: #C2705A;   /* 主役アクセント */
+  --gold:       #C8A871;   /* お祝いの華やぎ（線・ドットのみ） */
+  --espresso:   #41342C;   /* 締め色 */
+  --sand:       #F4EADF;   /* 淡い地色 */
+  --ivory:      #FCF8F3;   /* 基本背景 */
+  --ink:        #3A332E;   /* 本文 */
+  --ink-soft:   #766B60;   /* 補助テキスト */
+
+  /* 派生（アクセントの淡色・濃色：JSで色相を保ったまま生成しないので固定） */
+  --terracotta-soft: rgba(194, 112, 90, 0.10);
+  --terracotta-line: rgba(194, 112, 90, 0.30);
+  --gold-line:       rgba(200, 168, 113, 0.55);
+
+  /* --- タイポ --- */
+  --jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --en: "Montserrat", sans-serif;
+
+  /* --- レイアウト --- */
+  --col: 560px;          /* モバイル主体の読み幅 */
+  --pad: 28px;           /* 左右の最小余白 */
+  --section-y: clamp(72px, 13vw, 116px);
+  --cta-h: 76px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--jp);
+  color: var(--ink);
+  background: var(--ivory);
+  line-height: 1.6;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+
+/* =========================================================
+   レイアウト基盤
+   ========================================================= */
+.section { padding: var(--section-y) 0; position: relative; }
+.section--sand  { background: var(--sand); }
+.section--ivory { background: var(--ivory); }
+.section--espresso { background: var(--espresso); color: var(--ivory); }
+
+.wrap {
+  width: 100%;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+.wrap--wide { max-width: 1000px; }
+
+/* 全幅ビジュアル */
+.bleed { width: 100%; }
+
+/* =========================================================
+   セクション見出しの「型」: 英字ラベル(大・テラコッタ)＋日本語サブ
+   ========================================================= */
+.eyebrow {
+  text-align: center;
+  margin-bottom: 44px;
+}
+.eyebrow .en {
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: clamp(34px, 9vw, 46px);
+  letter-spacing: 0.14em;
+  color: var(--terracotta);
+  text-transform: uppercase;
+  line-height: 1;
+  display: block;
+}
+.eyebrow .jp {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  position: relative;
+  padding-bottom: 14px;
+}
+/* ゴールドの極細下線（リボン的あしらい） */
+.eyebrow .jp::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 0;
+  transform: translateX(-50%);
+  width: 36px; height: 1px;
+  background: var(--gold-line);
+}
+.section--espresso .eyebrow .jp { color: rgba(252,248,243,0.7); }
+
+/* 大見出し（日本語） */
+.headline {
+  font-size: clamp(26px, 7.4vw, 34px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.section--espresso .headline { color: var(--ivory); }
+.headline .accent { color: var(--terracotta); }
+
+.lead {
+  font-size: clamp(20px, 5.6vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.55;
+  text-wrap: balance;
+}
+.body {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+.body--soft { color: var(--ink-soft); }
+.cap { font-size: 13px; color: var(--ink-soft); letter-spacing: 0.02em; line-height: 1.7; }
+
+.center { text-align: center; }
+.mt-s { margin-top: 16px; }
+.mt-m { margin-top: 28px; }
+.mt-l { margin-top: 44px; }
+
+/* =========================================================
+   スクロール演出（フェードアップ・一度だけ）
+   ========================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s cubic-bezier(.22,.61,.36,1),
+              transform 0.9s cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform;
+}
+.reveal.is-in { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: .08s; }
+.reveal.d2 { transition-delay: .16s; }
+.reveal.d3 { transition-delay: .24s; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* =========================================================
+   01 ヒーロー
+   ========================================================= */
+.hero { position: relative; padding-top: 30px; }
+.hero__brand {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; margin-bottom: 30px;
+}
+.hero__logo {
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: #fff;
+  background: var(--terracotta);
+  padding: 7px 13px;
+}
+.hero__tagline { font-size: 12px; letter-spacing: 0.16em; color: var(--ink-soft); }
+
+.hero__copy { text-align: center; }
+.hero__main {
+  font-size: clamp(30px, 8.6vw, 40px);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+.hero__main .br-accent { color: var(--terracotta); }
+.hero__sub {
+  margin-top: 22px;
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-soft);
+  text-wrap: balance;
+}
+.hero__sub strong { color: var(--ink); font-weight: 700; }
+
+.hero__visual {
+  margin-top: 40px;
+  max-width: var(--col);   /* デスクトップでもモバイル列幅に収める */
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero__visual image-slot {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;     /* 写真(1200×900)と同比率＝全体が映る */
+}
+
+.hero__cta {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 14px; margin-top: 40px;
+}
+.scroll-hint {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
+  margin-top: 36px;
+  font-family: var(--en); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--ink-soft);
+}
+.scroll-hint .line {
+  width: 1px; height: 36px; background: var(--terracotta-line);
+  animation: scrolldrop 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes scrolldrop {
+  0%,100% { transform: scaleY(0.4); opacity:.4; }
+  50% { transform: scaleY(1); opacity:1; }
+}
+
+/* =========================================================
+   ボタン
+   ========================================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px;
+  font-family: var(--jp); font-weight: 700; letter-spacing: 0.04em;
+  cursor: pointer; border: none; text-decoration: none;
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.btn .ico { width: 19px; height: 19px; stroke-width: 1.6; }
+.btn .arr { transition: transform .25s ease; }
+.btn:hover .arr { transform: translateX(4px); }
+
+/* 主役：購入 */
+.btn--buy {
+  background: var(--terracotta);
+  color: #fff;
+  font-size: 18px;
+  padding: 18px 38px;
+  box-shadow: 0 10px 26px -12px rgba(194,112,90,.7);
+  position: relative;
+}
+.btn--buy::before {
+  content: ""; position: absolute; top: 0; left: 18px; right: 18px; height: 1px;
+  background: var(--gold-line);
+}
+.btn--buy:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -12px rgba(194,112,90,.75); }
+
+/* 脇役：LINE */
+.btn--line {
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--terracotta-line);
+  border-radius: 0;
+}
+.btn--line .ico { width: 16px; height: 16px; color: var(--terracotta); }
+.btn--line:hover { color: var(--terracotta); }
+
+/* =========================================================
+   02 共感（PROBLEM）
+   ========================================================= */
+.problem-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 2×2 課題マトリックス */
+  gap: 1px;
+  margin-top: 44px;
+  background: var(--terracotta-line);
+  border: 1px solid var(--terracotta-line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.problem-item {
+  background: var(--ivory);
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 12px;
+  padding: 30px 16px;
+}
+.section--sand .problem-item { background: var(--sand); }
+.problem-item .ico {
+  width: 30px; height: 30px; color: var(--terracotta);
+  stroke-width: 1.4; flex: none;
+}
+.problem-item p { font-size: 15px; line-height: 1.65; }
+.problem-item p b { font-weight: 700; color: var(--terracotta); }
+.problem-close {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 18px; font-weight: 700; line-height: 1.7;
+  letter-spacing: 0.03em;
+  text-wrap: balance;
+}
+.problem-close .u {
+  background: linear-gradient(transparent 62%, var(--terracotta-soft) 62%);
+}
+
+/* =========================================================
+   03 提案（SOLUTION）+ Before/After
+   ========================================================= */
+.solution-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  margin-top: 46px;
+  background: var(--terracotta-line);
+  border: 1px solid var(--terracotta-line);
+}
+.sol-cell {
+  background: var(--ivory);
+  padding: 26px 20px;
+  text-align: center;
+}
+.section--sand .sol-cell { background: var(--sand); }
+.sol-cell .num {
+  font-family: var(--en); font-size: 12px; letter-spacing: 0.16em;
+  color: var(--gold); font-weight: 600;
+}
+.sol-cell h4 { font-size: 19px; font-weight: 700; margin-top: 10px; letter-spacing: 0.04em; }
+.sol-cell p { font-size: 14px; color: var(--ink-soft); margin-top: 8px; line-height: 1.7; }
+
+/* Before / After 切替 */
+.ba { margin-top: 56px; }
+.ba-slider {
+  position: relative; width: 100%; aspect-ratio: 4 / 3;
+  overflow: hidden; user-select: none; touch-action: none;
+  cursor: ew-resize; background: var(--sand);
+}
+.ba-slider__img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: block; pointer-events: none;
+}
+.ba-slider__before { position: absolute; inset: 0; clip-path: inset(0 50% 0 0); will-change: clip-path; }
+.ba-slider__tag {
+  position: absolute; top: 14px; z-index: 3; pointer-events: none;
+  font-family: var(--en); font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  color: #fff; padding: 7px 12px;
+}
+.ba-slider__tag--before { left: 14px; background: var(--ink-soft); }
+.ba-slider__tag--after  { right: 14px; background: var(--terracotta); }
+.ba-slider__handle {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+  background: #fff; transform: translateX(-50%); z-index: 4; cursor: ew-resize;
+}
+.ba-slider__handle:focus-visible { outline: none; }
+.ba-slider__grip {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 42px; height: 42px; border-radius: 50%; background: #fff; color: var(--terracotta);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+.ba-slider__handle:focus-visible .ba-slider__grip { box-shadow: 0 0 0 3px var(--terracotta-line), 0 2px 10px rgba(0,0,0,0.25); }
+.ba-slider__grip svg { width: 22px; height: 22px; stroke-width: 2; }
+.ba-cap {
+  display: flex; justify-content: space-between; gap: 12px; margin-top: 16px;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.02em;
+}
+.ba-cap span:first-child { color: var(--ink-soft); }
+.ba-cap span:last-child { color: var(--terracotta); }
+.ba__hint { margin-top: 10px; text-align: center; font-size: 12px; color: var(--ink-soft); letter-spacing: 0.02em; }
+
+/* =========================================================
+   04 Q-CUBEとは（ABOUT）
+   ========================================================= */
+.about-hero image-slot { width: 100%; height: min(80vw, 440px); margin-top: 8px; }
+.feat-list { margin-top: 44px; display: grid; gap: 26px; }
+.feat {
+  display: grid; grid-template-columns: 40px 1fr; gap: 18px; align-items: start;
+}
+.feat__ico {
+  width: 40px; height: 40px; border: 1px solid var(--terracotta-line);
+  display: flex; align-items: center; justify-content: center; color: var(--terracotta);
+}
+.feat__ico svg { width: 21px; height: 21px; stroke-width: 1.4; }
+.feat h4 { font-size: 17px; font-weight: 700; letter-spacing: 0.03em; }
+.feat p { font-size: 14.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.7; }
+.quote-block {
+  margin-top: 48px;
+  border-left: 2px solid var(--terracotta);
+  padding: 6px 0 6px 22px;
+  font-size: 18px; font-weight: 700; line-height: 1.8; letter-spacing: 0.03em;
+  color: var(--ink); text-wrap: balance;
+}
+
+/* =========================================================
+   05 選ばれる理由（REASON）
+   ========================================================= */
+.reason-list { margin-top: 44px; display: grid; gap: 0; }
+.reason {
+  display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--terracotta-line);
+}
+.reason:first-child { border-top: 1px solid var(--terracotta-line); }
+.reason__num {
+  font-family: var(--en); font-size: 38px; font-weight: 700;
+  color: transparent; -webkit-text-stroke: 1px var(--terracotta);
+  line-height: 1; min-width: 56px;
+}
+.reason h4 { font-size: 18px; font-weight: 700; letter-spacing: 0.03em; }
+.reason p { font-size: 14.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.7; }
+
+/* =========================================================
+   06 贈った後の世界（AFTER）タイムライン
+   ========================================================= */
+.timeline { margin-top: 48px; position: relative; padding-left: 0; }
+.timeline::before { display: none; }
+.tl-item { position: relative; padding-bottom: 30px; text-align: center; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item:not(:last-child)::after {
+  content: ""; display: block; width: 26px; height: 1px;
+  background: var(--terracotta-line); margin: 22px auto 0;
+}
+.tl-item .when {
+  font-family: var(--en); font-size: 11px; letter-spacing: 0.16em;
+  color: var(--gold); font-weight: 600; text-transform: uppercase;
+}
+.tl-item h4 { font-size: 17px; font-weight: 700; margin-top: 6px; letter-spacing: 0.03em; }
+.tl-item p { font-size: 14.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.7; }
+.after-close {
+  margin-top: 44px; text-align: center;
+  font-size: 18px; font-weight: 700; letter-spacing: 0.03em; line-height: 1.7;
+  text-wrap: balance;
+}
+
+/* =========================================================
+   07 ギフト仕様（OPTION）★最重要
+   ========================================================= */
+.option-band {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 0 auto 26px; padding: 8px 18px;
+  background: #06C755; color: #fff; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.06em; border-radius: 999px;
+}
+.option-band svg { width: 16px; height: 16px; }
+.option-list { margin-top: 44px; display: grid; gap: 14px; }
+.opt-card {
+  background: var(--ivory);
+  border: 1px solid var(--terracotta-line);
+  padding: 28px 22px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 12px;
+  position: relative;
+}
+.section--sand .opt-card { background: #fff; }
+.opt-card__ico {
+  width: 44px; height: 44px; color: var(--terracotta);
+  display: flex; align-items: center; justify-content: center;
+}
+.opt-card__ico svg { width: 24px; height: 24px; stroke-width: 1.4; }
+.opt-card h4 { font-size: 17px; font-weight: 700; letter-spacing: 0.03em; }
+.opt-card h4 .badge {
+  font-size: 10px; font-weight: 600; color: var(--ink-soft);
+  border: 1px solid var(--terracotta-line); padding: 2px 7px; margin-left: 8px;
+  letter-spacing: 0.04em; vertical-align: middle; white-space: nowrap;
+}
+.opt-card p { font-size: 14px; color: var(--ink-soft); margin-top: 6px; line-height: 1.7; }
+.opt-card--key { border-color: var(--terracotta); border-width: 1.5px; }
+.opt-card--key::after {
+  content: "おすすめ"; position: absolute; top: -1px; right: -1px;
+  background: var(--terracotta); color: #fff; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; padding: 4px 10px;
+}
+.option-flow {
+  margin-top: 40px; text-align: center;
+  font-size: 16px; line-height: 1.9; color: var(--ink); text-wrap: balance;
+}
+.option-flow strong { color: var(--terracotta); font-weight: 700; }
+
+/* =========================================================
+   08 こんなシーンに（OCCASION）
+   ========================================================= */
+.occasion-grid {
+  margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.occ {
+  background: var(--ivory); border: 1px solid var(--terracotta-line);
+  padding: 24px 16px; text-align: center;
+}
+.section--sand .occ { background: #fff; }
+.occ:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.occ__ico { color: var(--terracotta); display: flex; justify-content: center; }
+.occ__ico svg { width: 26px; height: 26px; stroke-width: 1.4; }
+.occ h4 { font-size: 16px; font-weight: 700; margin-top: 12px; letter-spacing: 0.04em; }
+.occasion-targets {
+  margin-top: 30px; text-align: center; font-size: 14px; color: var(--ink-soft); line-height: 1.9;
+}
+.occasion-targets b { color: var(--ink); font-weight: 500; }
+
+/* =========================================================
+   09 声・実例（VOICE）
+   ========================================================= */
+.voice-list { margin-top: 44px; display: grid; gap: 20px; }
+.voice {
+  background: var(--ivory); border: 1px solid var(--terracotta-line); padding: 26px 24px;
+}
+.section--sand .voice { background: #fff; }
+.voice__mark { font-family: var(--en); font-size: 40px; color: var(--gold); line-height: .8; height: 22px; }
+.voice p { font-size: 16px; line-height: 1.8; margin-top: 8px; letter-spacing: 0.02em; }
+.voice__who {
+  margin-top: 18px; display: flex; align-items: center; gap: 12px;
+  font-size: 13px; color: var(--ink-soft);
+}
+.voice__who image-slot { width: 42px; height: 42px; flex: none; }
+.voice__who b { color: var(--ink); font-weight: 700; }
+.voice-shots { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.voice-shots image-slot { width: 100%; height: auto; aspect-ratio: 4 / 5; }
+
+/* =========================================================
+   10 価格・納期（PRICE）
+   ========================================================= */
+.price-card {
+  margin-top: 44px; background: var(--ivory);
+  border: 1px solid var(--terracotta-line); text-align: center;
+  padding: 40px 28px;
+  position: relative;
+}
+.section--sand .price-card { background: #fff; }
+.price-card::before {
+  content: ""; position: absolute; top: 0; left: 28px; right: 28px; height: 1px;
+  background: var(--gold-line);
+}
+.price-card .label { font-family: var(--en); font-size: 12px; letter-spacing: 0.18em; color: var(--ink-soft); }
+.price-card .val {
+  font-family: var(--en); font-weight: 700; color: var(--terracotta);
+  font-size: 54px; letter-spacing: 0.01em; line-height: 1; margin-top: 14px;
+}
+.price-card .val .yen { font-size: 28px; }
+.price-card .val .small { font-size: 18px; color: var(--ink); }
+.price-card .tax { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
+
+.delivery { margin-top: 26px; display: grid; gap: 12px; }
+.deliv {
+  display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center;
+  text-align: left; border: 1px solid var(--terracotta-line); padding: 16px 18px;
+}
+.deliv__tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; white-space: nowrap;
+  padding: 6px 10px;
+}
+.deliv__tag--store { background: var(--terracotta); color: #fff; }
+.deliv__tag--order { background: transparent; color: var(--terracotta); border: 1px solid var(--terracotta); }
+.deliv p { font-size: 14px; line-height: 1.6; }
+.deliv p b { font-weight: 700; }
+.price-note {
+  margin-top: 24px; font-size: 14px; color: var(--terracotta); font-weight: 700;
+  letter-spacing: 0.03em; text-align: center;
+}
+
+/* =========================================================
+   11 クロージングCTA（espresso）
+   ========================================================= */
+.closing { text-align: center; }
+.closing__main {
+  font-size: clamp(28px, 8vw, 38px); font-weight: 700;
+  letter-spacing: 0.04em; line-height: 1.55; color: var(--ivory); text-wrap: balance;
+}
+.closing__main .accent { color: var(--gold); }
+.closing .hero__cta { margin-top: 42px; }
+.closing .btn--line { color: rgba(252,248,243,0.75); border-color: rgba(200,168,113,.45); }
+.closing .btn--line:hover { color: var(--gold); }
+.closing .btn--line .ico { color: var(--gold); }
+
+/* =========================================================
+   フッター
+   ========================================================= */
+.footer { background: var(--espresso); color: rgba(252,248,243,0.7); padding: 0 0 36px; }
+.footer__inner { text-align: center; }
+.footer__logo {
+  font-family: var(--en); font-weight: 700; font-size: 13px; letter-spacing: 0.22em;
+  color: #fff; background: var(--terracotta); display: inline-block; padding: 7px 13px;
+}
+.footer__line {
+  width: 60px; height: 1px; background: var(--gold-line); margin: 26px auto;
+}
+.footer p { font-size: 12.5px; line-height: 1.9; }
+.footer__copy { font-family: var(--en); font-size: 11px; letter-spacing: 0.1em; margin-top: 24px; opacity: .6; }
+
+/* =========================================================
+   固定CTAバー ★最重要
+   ========================================================= */
+.cta-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
+  height: var(--cta-h);
+  background: var(--terracotta);
+  display: flex; align-items: stretch;
+  box-shadow: 0 -8px 24px -14px rgba(65,52,44,.5);
+}
+.cta-bar::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+  background: var(--gold);
+}
+.cta-bar__item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; color: #fff; text-decoration: none; cursor: pointer;
+  transition: background .2s ease; padding: 0 8px;
+}
+.cta-bar__item:hover { background: rgba(0,0,0,0.06); }
+.cta-bar__item .top { display: flex; align-items: center; gap: 7px; }
+.cta-bar__item .ico { width: 18px; height: 18px; stroke-width: 1.6; }
+.cta-bar__item .lbl { font-size: 14px; font-weight: 700; letter-spacing: 0.03em; }
+.cta-bar__item .sub { font-size: 10px; letter-spacing: 0.04em; opacity: .8; }
+.cta-bar__item .arr { width: 14px; height: 14px; stroke-width: 2; }
+/* 購入＝主役：やや強く。LINE＝脇役 */
+.cta-bar__item--buy { background: rgba(0,0,0,0.10); }
+.cta-bar__item--buy .lbl { font-size: 15px; }
+.cta-bar__divider { width: 1px; background: rgba(255,255,255,0.28); margin: 16px 0; }
+.cta-bar__top {
+  width: var(--cta-h); flex: none; display: flex; align-items: center; justify-content: center;
+  color: #fff; text-decoration: none; cursor: pointer;
+}
+.cta-bar__top svg { width: 18px; height: 18px; stroke-width: 1.8; }
+.cta-bar__top:hover { background: rgba(0,0,0,0.10); }
+
+/* 小画面 */
+@media (max-width: 380px) {
+  .cta-bar__item .sub { display: none; }
+  .solution-grid { grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   Tweaks パネル用：data-accent でアクセント差し替え
+   ========================================================= */
+body[data-accent="pink"]   { --terracotta: #C98B8B; --terracotta-soft: rgba(201,139,139,.10); --terracotta-line: rgba(201,139,139,.32); }
+body[data-accent="sage"]   { --terracotta: #8FA38C; --terracotta-soft: rgba(143,163,140,.10); --terracotta-line: rgba(143,163,140,.32); }
+body[data-accent="navy"]   { --terracotta: #3A4A63; --terracotta-soft: rgba(58,74,99,.10);   --terracotta-line: rgba(58,74,99,.30); }
+
+/* =========================================================
+   画像プレースホルダー（image-slot）の空状態を上品に
+   ========================================================= */
+image-slot {
+  border: 1px solid var(--terracotta-line);
+  background-color: var(--sand);
+  background-image:
+    repeating-linear-gradient(45deg,
+      transparent, transparent 9px,
+      rgba(194,112,90,0.06) 9px, rgba(194,112,90,0.06) 10px);
+}
+.section--sand image-slot { background-color: var(--ivory); }
+
+/* 注意書き（リーズン／オプション） */
+.reason-note, .option-note {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.option-note { margin-top: 16px; }
+
+/* パッケージ（PACKAGE） */
+.package { margin-top: 28px; display: grid; gap: 22px; }
+.package figure { margin: 0; }
+.package image-slot { display: block; width: 100%; height: auto; }
+.package .pkg-portrait image-slot { aspect-ratio: 4 / 5; }
+.package .pkg-wide image-slot { aspect-ratio: 3 / 2; }
+.package figcaption { margin-top: 10px; text-align: center; font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+.package-note { margin-top: 22px; text-align: center; font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
