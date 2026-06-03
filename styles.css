@@ -629,7 +629,6 @@ img { display: block; max-width: 100%; }
 /* スマホでは本文系の手動改行を無効化し、自然な折り返しにする
    （見出し: hero__main / headline / closing__main の改行は意図通り残す） */
 @media (max-width: 600px) {
-  .hero__sub br,
   .lead br,
   .problem-close br,
   .feat p br,
