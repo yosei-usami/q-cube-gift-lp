@@ -682,3 +682,12 @@ image-slot {
 .package .pkg-wide image-slot { aspect-ratio: 3 / 2; }
 .package figcaption { margin-top: 10px; text-align: center; font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
 .package-note { margin-top: 22px; text-align: center; font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+
+/* =========================================================
+   スマホ最適化（追記）
+   ========================================================= */
+@media (max-width: 600px) {
+  .lead br { display: inline; }                 /* リード文の改行をスマホでも表示 */
+  .problem-list { grid-template-columns: 1fr; } /* 課題マトリックスを1列に */
+}
+.problem-close .u { white-space: nowrap; }      /* 「使われ続ける」を途中で割らない */
