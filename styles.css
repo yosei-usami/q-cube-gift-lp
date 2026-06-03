@@ -42,6 +42,9 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  /* 日本語を文節単位で折り返し、語の途中での改行を防ぐ */
+  word-break: auto-phrase;
+  line-break: strict;
 }
 
 img { display: block; max-width: 100%; }
