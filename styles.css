@@ -1,3 +1,9 @@
+/* problem-close をスマホで3行に（!importantで順序非依存） */
+@media (max-width: 600px) {
+  .problem-close br { display: inline !important; }
+  .problem-close .u::after { content: "\A"; white-space: pre; }
+}
+
 /* =========================================================
    Q-CUBE ギフトLP — デザインシステム
    余白で語る、上質で温かなプレミアム感
