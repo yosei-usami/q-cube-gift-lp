@@ -1,3 +1,6 @@
+/* SOLUTIONは縦4つ（常に1列） */
+.solution-grid { grid-template-columns: 1fr !important; }
+
 /* SOLUTIONをスマホで1列に */
 @media (max-width: 600px) {
   .solution-grid { grid-template-columns: 1fr !important; }
