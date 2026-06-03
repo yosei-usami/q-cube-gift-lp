@@ -1,3 +1,8 @@
+/* SOLUTIONをスマホで1列に */
+@media (max-width: 600px) {
+  .solution-grid { grid-template-columns: 1fr !important; }
+}
+
 /* problem-close をスマホで3行に（!importantで順序非依存） */
 @media (max-width: 600px) {
   .problem-close br { display: inline !important; }
